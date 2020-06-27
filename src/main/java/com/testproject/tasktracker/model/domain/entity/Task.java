@@ -3,6 +3,7 @@ package com.testproject.tasktracker.model.domain.entity;
 import com.testproject.tasktracker.model.domain.enums.Status;
 import com.vladmihalcea.hibernate.type.basic.PostgreSQLEnumType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
@@ -17,10 +18,11 @@ import javax.validation.constraints.NotNull;
 )
 
 @Entity
-@Table(name = "users")
+@Table(name = "tasks")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

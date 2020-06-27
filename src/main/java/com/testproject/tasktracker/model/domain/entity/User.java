@@ -1,6 +1,8 @@
 package com.testproject.tasktracker.model.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -34,7 +37,15 @@ public class User {
     private String email;
 
     @Size(min = 8, message = "minimum password length 8 characters")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Task> tasks;
+
+//    public User(String firstName, String lastName, String email, String password) {
+//        this.password = password;
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.email = email;
+//    }
 }
