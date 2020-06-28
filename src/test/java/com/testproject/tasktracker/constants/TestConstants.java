@@ -6,4 +6,5 @@ public class TestConstants {
     public static final String TEST_NAME = "name";
     public static final String TEST_LAST_NAME = "last name";
     public static final String TEST_PASSWORD = "password";
+    public static final String TEST_NAME_UPDATE = "updated name";
 }

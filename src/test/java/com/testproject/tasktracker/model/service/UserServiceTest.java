@@ -1,6 +1,7 @@
 package com.testproject.tasktracker.model.service;
 
 import com.testproject.tasktracker.model.domain.entity.User;
+import com.testproject.tasktracker.model.domain.exception.UserExistException;
 import com.testproject.tasktracker.model.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,19 +43,29 @@ public class UserServiceTest {
 
     @Test
     public void createUserReturnTrueWhenUserAddedToDataBase() {
-        boolean isCreated = userService.create(user);
+        Mockito.doReturn(User.builder()
+                .email(TEST_EMAIL)
+                .lastName(TEST_LAST_NAME)
+                .build())
+                .when(userRepository)
+                .save(ArgumentMatchers.any(User.class));
+        User createdUser = userService.create(user);
         Mockito.verify(userRepository, Mockito.times(1)).existsByEmail(TEST_EMAIL);
         Mockito.verify(userRepository, Mockito.times(1)).save(user);
         Mockito.verify(passwordEncoder, Mockito.times(1)).encode(TEST_PASSWORD);
-        assertTrue(isCreated);
+        assertEquals(TEST_EMAIL, createdUser.getEmail());
+        assertEquals(TEST_LAST_NAME, createdUser.getLastName());
     }
 
     @Test
-    public void createUserReturnFalseWhenUserEmailAlreadyInDatabase() {
+    public void createUserThrowExceptionWhenUserEmailAlreadyInDatabase() {
         Mockito.doReturn(true).when(userRepository).existsByEmail(TEST_EMAIL);
-        boolean isCreated = userService.create(user);
+        assertThrows(UserExistException.class, () -> {
+            userService.create(user);
+        });
+
         Mockito.verify(userRepository, Mockito.times(1)).existsByEmail(TEST_EMAIL);
-        assertFalse(isCreated);
+
     }
 
     @Test
@@ -62,12 +73,22 @@ public class UserServiceTest {
         User newUser = User.builder()
                 .password(TEST_PASSWORD)
                 .id(TEST_ID)
+                .firstName(TEST_NAME_UPDATE)
                 .build();
         Mockito.doReturn(Optional.of(user)).when(userRepository).findById(TEST_ID);
-        boolean isUpdated = userService.update(newUser);
-        Mockito.verify(userRepository, Mockito.times(1)).save(ArgumentMatchers.any(User.class));
+        Mockito.doReturn(User.builder()
+                .email(TEST_EMAIL)
+                .firstName(TEST_NAME_UPDATE)
+                .build())
+                .when(userRepository)
+                .save(ArgumentMatchers.any(User.class));
+        User user = userService.update(newUser);
+        Mockito.verify(userRepository, Mockito.times(1))
+                .save(ArgumentMatchers.any(User.class));
         Mockito.verify(passwordEncoder, Mockito.times(1)).encode(TEST_PASSWORD);
-        assertTrue(isUpdated);
+
+        assertEquals(TEST_EMAIL, user.getEmail());
+        assertEquals(TEST_NAME_UPDATE, user.getFirstName());
     }
 
 }
