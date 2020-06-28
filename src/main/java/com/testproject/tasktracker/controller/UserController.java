@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/v1/users")
 public class UserController {
     private UserService userService;
 
@@ -22,26 +22,31 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("")
+    public ResponseEntity<List<User>> getAll(@PageableDefault() Pageable pageable) {
+        Page<User> pages = userService.getAll(pageable);
+        return ResponseEntity.ok(pages.get().collect(Collectors.toList()));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<User> getById(@PathVariable long id) {
-        return ResponseEntity.of(userService.findById(id));
+        return ResponseEntity.ok(userService.findById(id));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestBody User user) {
-        userService.create(user);
-        return ResponseEntity.ok("User with email: " + user.getEmail() + " was successfully created");
+    public ResponseEntity<User> create(@RequestBody User user) {
+        return ResponseEntity.ok(userService.create(user));
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> update(@RequestBody User user) {
-        userService.update(user);
-        return ResponseEntity.ok("User with id: " + user.getId() + " was successfully updated");
+    public ResponseEntity<User> update(@RequestBody User user) {
+
+        return ResponseEntity.ok(userService.update(user));
     }
 
-    @GetMapping("")
-    public List<User> getAll(@PageableDefault() Pageable pageable) {
-        Page<User> pages = userService.getAll(pageable);
-        return pages.get().collect(Collectors.toList());
+
+    @GetMapping("/find")
+    public ResponseEntity<User> getByEmail(@RequestParam(value = "email") String email) {
+        return ResponseEntity.ok(userService.findByEmail(email));
     }
 }

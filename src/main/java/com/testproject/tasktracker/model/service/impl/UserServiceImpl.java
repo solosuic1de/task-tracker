@@ -1,6 +1,8 @@
 package com.testproject.tasktracker.model.service.impl;
 
 import com.testproject.tasktracker.model.domain.entity.User;
+import com.testproject.tasktracker.model.domain.exception.UserExistException;
+import com.testproject.tasktracker.model.domain.exception.UserNotFoundException;
 import com.testproject.tasktracker.model.repository.UserRepository;
 import com.testproject.tasktracker.model.service.UserService;
 import com.testproject.tasktracker.utils.PropertyUtils;
@@ -8,10 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -26,32 +28,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean create(User user) {
+    public User create(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             log.warn("user with email '{}' is already exist in db", user.getEmail());
-            return false;
+            throw new UserExistException(user.getEmail());
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         log.info("try to save user - {} in db", user);
-        userRepository.save(user);
-        return true;
+        return userRepository.save(user);
     }
 
     @Override
-    public boolean update(User user) {
-        Optional<User> oldUser = findById(user.getId());
-        if (oldUser.isPresent()) {
-            if (user.getPassword() != null) {
-                user.setPassword(passwordEncoder.encode(user.getPassword()));
-            }
-            User result = oldUser.get();
-            PropertyUtils.copyNotNullFields(user, result);
-            log.info("try to update user with id - {}", result.getId());
-            userRepository.save(result);
-            return true;
+    public User update(User user) {
+        User result = findById(user.getId());
+        if (user.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        log.warn("cant update, user with id {} does not exist", user.getId());
-        return false;
+        PropertyUtils.copyNotNullFields(user, result);
+        log.info("try to update user with id - {}", result.getId());
+        return userRepository.save(result);
     }
 
     @Override
@@ -61,15 +56,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
+    public User findByEmail(String email) {
         log.info("try to get user with email {}", email);
-        return userRepository.findByEmail(email);
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(email));
     }
 
     @Override
-    public Optional<User> findById(long id) {
+    public User findById(long id) {
         log.info("try to get user with id {}", id);
-        return userRepository.findById(id);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @Override

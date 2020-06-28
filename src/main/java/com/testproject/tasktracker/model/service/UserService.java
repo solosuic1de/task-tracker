@@ -12,15 +12,15 @@ import java.util.Optional;
 @Service
 @Transactional
 public interface UserService {
-    boolean create(User user);
+    User create(User user);
 
-    boolean update(User user);
+    User update(User user);
 
     void deleteById(long id);
 
-    Optional<User> findByEmail(String email);
+    User findByEmail(String email);
 
-    Optional<User> findById(long id);
+    User findById(long id);
 
     Page<User> getAll(Pageable pageable);
 
