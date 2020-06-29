@@ -22,12 +22,12 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class TaskServiceIml implements TaskService {
+public class TaskServiceImpl implements TaskService {
     private TaskRepository taskRepository;
     private UserService userService;
 
     @Autowired
-    public TaskServiceIml(TaskRepository taskRepository, UserService userService) {
+    public TaskServiceImpl(TaskRepository taskRepository, UserService userService) {
         this.taskRepository = taskRepository;
         this.userService = userService;
     }
