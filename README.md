@@ -16,7 +16,7 @@ docker-compose up --build
 ```
 docker-compose up --down
 ```
-5. To access application home page open [localhost:8080](http://localhost:8080/)
+5. To access application open [localhost:8080/v1/auth](http://localhost:8080/v1/auth)
 
 <a name="local-run"></a> 
 ## Start application locally
@@ -43,7 +43,7 @@ git clone https://github.com/solosuic1de/task-tracker
 ```
 gradle bootRun -Plocal
 ```
-3. To access application home page open [localhost:8080](http://localhost:8080/)
+3. To access application open [localhost:8080/v1/auth](http://localhost:8080/v1/auth)
 <a name="swagger"></a> 
 ## API testing with Swagger
 1. After you launched the application, open [http://localhost:8080/swagger-ui.html#/](http://localhost:8080/swagger-ui.html#/)
