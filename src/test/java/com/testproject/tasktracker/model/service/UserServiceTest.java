@@ -44,7 +44,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void createUserReturnTrueWhenUserAddedToDataBase() {
+    public void whenCreateUserReturnUserWhenUserAddedToDataBase() {
         Mockito.doReturn(User.builder()
                 .email(TEST_EMAIL)
                 .lastName(TEST_LAST_NAME)
@@ -60,7 +60,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void createUserThrowExceptionWhenUserEmailAlreadyInDatabase() {
+    public void whenCreateUserThrowExceptionWhenUserEmailAlreadyInDatabase() {
         Mockito.doReturn(true).when(userRepository).existsByEmail(TEST_EMAIL);
         assertThrows(UserExistException.class, () -> {
             userService.create(user);
@@ -71,7 +71,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void updateUserReturnTrueAndCallEncodeWhenUpdatePassword() {
+    public void whenUpdateUserReturnUserAndCallEncodeWhenUpdatePassword() {
         User newUser = User.builder()
                 .password(TEST_PASSWORD)
                 .id(TEST_ID)
