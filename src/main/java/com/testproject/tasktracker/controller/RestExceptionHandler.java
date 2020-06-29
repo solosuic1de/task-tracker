@@ -5,7 +5,6 @@ import com.testproject.tasktracker.model.domain.exception.TaskPermissionDeniedEx
 import com.testproject.tasktracker.model.domain.exception.UserExistException;
 import com.testproject.tasktracker.model.domain.exception.UserNotFoundException;
 import com.testproject.tasktracker.model.error.ApiError;
-import com.testproject.tasktracker.model.error.JwtApiError;
 import com.testproject.tasktracker.model.error.EntityError;
 import com.testproject.tasktracker.model.security.jwt.JwtAuthenticationException;
 import org.springframework.core.Ordered;
@@ -15,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
@@ -22,16 +22,13 @@ import java.util.List;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
+@ApiIgnore
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(JwtAuthenticationException.class)
-    protected ResponseEntity<ApiError> handleJwtAuthError(
+    protected ResponseEntity<ApiError> handleJwtAuth(
             JwtAuthenticationException ex) {
-        return buildResponse(JwtApiError.builder()
-                .status(HttpStatus.FORBIDDEN)
-                .token(ex.getToken())
-                .exception(ex.getMessage())
-                .build());
+        return buildResponse(new EntityError(HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 
     @ExceptionHandler(TaskNotFoundException.class)

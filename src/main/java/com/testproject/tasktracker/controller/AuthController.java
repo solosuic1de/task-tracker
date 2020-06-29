@@ -5,6 +5,8 @@ import com.testproject.tasktracker.model.domain.entity.User;
 import com.testproject.tasktracker.model.security.jwt.JwtUser;
 import com.testproject.tasktracker.model.service.UserService;
 import com.testproject.tasktracker.model.security.jwt.JwtTokenProvider;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +45,7 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @ApiOperation(value = "Login", authorizations = {@Authorization(value = "Bearer")})
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest requestDto) {
         try {
@@ -59,11 +62,13 @@ public class AuthController {
         }
     }
 
+    @ApiOperation(value = "Register new user", authorizations = {@Authorization(value = "Bearer")})
     @PostMapping("/register")
     public ResponseEntity<User> create(@RequestBody User user) {
         return ResponseEntity.ok(userService.create(user));
     }
 
+    @ApiOperation(value = "Get user info", authorizations = {@Authorization(value = "Bearer")})
     @GetMapping("/me")
     public ResponseEntity<User> getCurrentUser(@AuthenticationPrincipal JwtUser userPrincipal) {
         return ResponseEntity.ok(userService.findById(userPrincipal.getId()));

@@ -9,6 +9,8 @@ import com.testproject.tasktracker.model.domain.enums.Sort;
 import com.testproject.tasktracker.model.domain.enums.Status;
 import com.testproject.tasktracker.model.security.jwt.JwtUser;
 import com.testproject.tasktracker.model.service.TaskService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,12 +34,14 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    @ApiOperation(value = "Get all tasks", authorizations = {@Authorization(value = "Bearer")})
     @GetMapping("")
     public ResponseEntity<List<Task>> getAllTasks(@PageableDefault() Pageable pageable) {
         Page<Task> pages = taskService.getAll(pageable);
         return ResponseEntity.ok(pages.get().collect(Collectors.toList()));
     }
 
+    @ApiOperation(value = "Get list of tasks filtered by status", authorizations = {@Authorization(value = "Bearer")})
     @GetMapping("/filter/status")
     public ResponseEntity<List<Task>> getAllTasksByStatus(@PageableDefault() Pageable pageable,
                                                           @RequestParam Status status) {
@@ -45,6 +49,7 @@ public class TaskController {
         return ResponseEntity.ok(pages.get().collect(Collectors.toList()));
     }
 
+    @ApiOperation(value = "Get list of tasks, sorted by userId", authorizations = {@Authorization(value = "Bearer")})
     @GetMapping("/sort/user")
     public ResponseEntity<List<Task>> getAllTaskSortedByUser(@PageableDefault() Pageable pageable,
                                                              @RequestParam Sort order) {
@@ -52,26 +57,30 @@ public class TaskController {
         return ResponseEntity.ok(pages.get().collect(Collectors.toList()));
     }
 
-    @PostMapping("/update/reassign")
+    @ApiOperation(value = "Change task user", authorizations = {@Authorization(value = "Bearer")})
+    @PutMapping("/update/reassign")
     public ResponseEntity<Task> assignToAnotherUser(@AuthenticationPrincipal JwtUser userPrincipal,
                                                     @RequestBody AssignToUserRequest assignDto) {
         return ResponseEntity.ok(taskService.assignToAnotherUser(assignDto.getTaskId(), userPrincipal.getId(), assignDto.getEmail()));
     }
 
-    @PostMapping("/update/status")
+    @ApiOperation(value = "Update task status", authorizations = {@Authorization(value = "Bearer")})
+    @PutMapping("/update/status")
     public ResponseEntity<Task> updateStatus(@AuthenticationPrincipal JwtUser userPrincipal,
                                              @RequestBody UpdateTaskStatusRequests updateTaskStatusRequests) {
         return ResponseEntity.ok(taskService.updateStatus(updateTaskStatusRequests.getTaskId(),
                 userPrincipal.getId(), updateTaskStatusRequests.getStatus()));
     }
 
+    @ApiOperation(value = "Create new task", authorizations = {@Authorization(value = "Bearer")})
     @PostMapping("/create")
     public ResponseEntity<Task> createTask(@AuthenticationPrincipal JwtUser userPrincipal,
                                            @RequestBody Task task) {
         return ResponseEntity.ok(taskService.create(task, userPrincipal.getId()));
     }
 
-    @PostMapping("/update")
+    @ApiOperation(value = "Update task", authorizations = {@Authorization(value = "Bearer")})
+    @PutMapping("/update")
     public ResponseEntity<Task> updateTask(@AuthenticationPrincipal JwtUser userPrincipal,
                                            @RequestBody UpdateTaskRequest updateTaskRequest) {
         Task task = Task.builder()
@@ -82,7 +91,8 @@ public class TaskController {
         return ResponseEntity.ok(taskService.update(task, userPrincipal.getId()));
     }
 
-    @PostMapping("/delete")
+    @ApiOperation(value = "Delete task", authorizations = {@Authorization(value = "Bearer")})
+    @DeleteMapping("/delete")
     public ResponseEntity<?> deleteTask(@AuthenticationPrincipal JwtUser userPrincipal,
                                         @RequestParam long id) {
         taskService.deleteTask(id, userPrincipal.getId());
