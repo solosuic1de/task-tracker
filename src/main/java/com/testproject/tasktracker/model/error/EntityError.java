@@ -9,22 +9,22 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class UserApiError implements ApiError {
+public class EntityError implements ApiError {
     private HttpStatus status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
     private String message;
 
-    private UserApiError() {
+    private EntityError() {
         timestamp = LocalDateTime.now();
     }
 
-    public UserApiError(HttpStatus status) {
+    public EntityError(HttpStatus status) {
         this();
         this.status = status;
     }
 
-    public UserApiError(HttpStatus status, String message) {
+    public EntityError(HttpStatus status, String message) {
         this(status);
         this.message = message;
     }

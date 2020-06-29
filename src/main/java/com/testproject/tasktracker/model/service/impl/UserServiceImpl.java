@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> getAll(Pageable pageable) {
-        log.info("try to run getAll function");
+        log.info("in UserService.getAll function");
         return userRepository.findAll(pageable);
     }
 }

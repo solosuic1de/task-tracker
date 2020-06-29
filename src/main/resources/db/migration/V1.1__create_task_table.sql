@@ -1,7 +1,7 @@
 CREATE SEQUENCE tasks_id_seq;
 
 CREATE TYPE public.task_status AS ENUM
-    ('DONE', 'IN_PROGRESS', 'VIEW');
+    ('View', 'In_Progress', 'Done');
 
     CREATE TABLE public.tasks
 (

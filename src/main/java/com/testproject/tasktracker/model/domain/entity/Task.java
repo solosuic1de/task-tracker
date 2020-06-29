@@ -1,5 +1,6 @@
 package com.testproject.tasktracker.model.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.testproject.tasktracker.model.domain.enums.Status;
 import com.vladmihalcea.hibernate.type.basic.PostgreSQLEnumType;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,7 @@ import javax.validation.constraints.NotNull;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private long id;
     @NotNull(message = "title can`t be null")
     private String title;

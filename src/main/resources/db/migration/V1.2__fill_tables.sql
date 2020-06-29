@@ -38,12 +38,12 @@ VALUES ('evgenyev@email.com', 'Evgen', 'Engenyev',
 
 --insert into task table
 INSERT INTO public.tasks(description, title, user_id, status)
-VALUES ('testTask', 'Ivanov`s viewed task', 1, 'VIEW');
+VALUES ('testTask', 'Ivanov`s viewed task', 1, 'View');
 INSERT INTO public.tasks(description, title, user_id, status)
-VALUES ('testTask', 'Ivanov`s in progress task', 1, 'IN_PROGRESS');
+VALUES ('testTask', 'Ivanov`s in progress task', 1, 'In_Progress');
 INSERT INTO public.tasks(description, title, user_id, status)
-VALUES ('testTask', 'Ivanov`s finished task', 1, 'DONE');
+VALUES ('testTask', 'Ivanov`s finished task', 1, 'Done');
 INSERT INTO public.tasks(description, title, user_id, status)
-VALUES ('testTask', 'Petrenko`s task', 2, 'IN_PROGRESS');
+VALUES ('testTask', 'Petrenko`s task', 2, 'In_Progress');
 INSERT INTO public.tasks(description, title, user_id, status)
-VALUES ('testTask', 'Alexandrov`s task', 3, 'DONE');
+VALUES ('testTask', 'Alexandrov`s task', 3, 'Done');
