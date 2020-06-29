@@ -26,11 +26,11 @@ public class User {
     private long id;
 
     @Column(name = "first_name")
-    @NotNull(message = "fist name can`t be null")
+    @NotNull(message = "fistName can`t be null")
     private String firstName;
 
     @Column(name = "last_name")
-    @NotNull(message = "last name can`t be null")
+    @NotNull(message = "lastName can`t be null")
     private String lastName;
 
     @Email

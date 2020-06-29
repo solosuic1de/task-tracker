@@ -27,10 +27,10 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NotNull
+    @NotNull(message = "title can`t be null")
     private String title;
     private String description;
-    @NotNull
+    @NotNull(message = "status can`t be null")
     @Enumerated(EnumType.STRING)
     @Type(type = "pgsql_enum")
     private Status status;

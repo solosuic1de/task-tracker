@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
+
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -26,6 +30,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .token(ex.getToken())
                 .exception(ex.getMessage())
                 .build());
+    }
+
+    @ExceptionHandler({ConstraintViolationException.class})
+    protected ResponseEntity<ApiError> handleValidationError(
+            ConstraintViolationException ex) {
+        List<String> stringList = new ArrayList<>();
+        ex.getConstraintViolations().stream().forEach(x -> stringList.add(x.getMessage()));
+        return buildResponse(new UserApiError(HttpStatus.BAD_REQUEST, stringList.toString()));
     }
 
     @ExceptionHandler({UserNotFoundException.class})
