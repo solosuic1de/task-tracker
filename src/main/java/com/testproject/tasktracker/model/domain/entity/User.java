@@ -49,6 +49,7 @@ public class User {
     @ApiModelProperty(value = "The password of the user", required = true)
     private String password;
 
+    @ApiModelProperty(hidden = true)
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Task> tasks;

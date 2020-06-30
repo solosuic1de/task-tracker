@@ -46,7 +46,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     @Type(type = "pgsql_enum")
     private Status status;
-
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

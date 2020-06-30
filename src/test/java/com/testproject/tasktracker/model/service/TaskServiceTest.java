@@ -90,7 +90,7 @@ class TaskServiceTest {
     }
 
     @Test
-    public void WhenUpdateStatusWithAnotherUserIdThenThrowException() {
+    public void whenUpdateStatusWithAnotherUserIdThenThrowException() {
         user.setId(0);
         task.setUser(user);
         Mockito.doReturn(Optional.of(task))

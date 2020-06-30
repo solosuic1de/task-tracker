@@ -11,6 +11,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -60,6 +61,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({UserExistException.class})
     protected ResponseEntity<ApiError> handleUserExistException(
             UserExistException ex) {
+        return buildResponse(new EntityError(HttpStatus.BAD_REQUEST, ex.getMessage()));
+    }
+
+    @ExceptionHandler({BadCredentialsException.class})
+    protected ResponseEntity<ApiError> handleBadCredException(
+            BadCredentialsException ex) {
         return buildResponse(new EntityError(HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
 

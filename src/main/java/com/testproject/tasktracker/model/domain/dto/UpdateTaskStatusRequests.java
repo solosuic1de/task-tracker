@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.StatementCreatorUtils;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(value = "AssignToUserRequest", description = "login parameters")
+@ApiModel(value = "UpdateTaskStatusRequests", description = "update task status")
 public class UpdateTaskStatusRequests {
     @ApiModelProperty(value = "Task id")
     private long taskId;

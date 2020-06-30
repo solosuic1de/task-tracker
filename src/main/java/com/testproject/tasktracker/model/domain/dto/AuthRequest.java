@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(value = "AssignToUserRequest", description = "login parameters")
+@ApiModel(value = "AuthRequest", description = "login parameters")
 public class AuthRequest {
     @ApiModelProperty(value = "Users Email")
     private String email;

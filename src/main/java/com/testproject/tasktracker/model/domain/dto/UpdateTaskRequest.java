@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(value = "AssignToUserRequest", description = "login parameters")
+@ApiModel(value = "UpdateTaskRequest", description = "parameters to update")
 public class UpdateTaskRequest {
     @ApiModelProperty(value = "Task id")
     private long id;
